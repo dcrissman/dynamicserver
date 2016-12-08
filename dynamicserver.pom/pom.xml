@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  
+  <modelVersion>4.0.0</modelVersion>
+  
+  <groupId>dynamicserver</groupId>
+  <artifactId>dynamicserver.pom</artifactId>
+  <version>1</version>
+  <packaging>pom</packaging>
+  <name>${project.artifactId}</name>
+  
+  <properties>
+  	<!-- Java Compilation -->
+  	<java.version>1.8</java.version>
+  	
+  	<!-- POMs -->
+  	<dynamicserver.namespace>dynamicserver</dynamicserver.namespace>
+  	<dynamicserver.lib.namespace>dynamicserver.lib</dynamicserver.lib.namespace>
+  	<dynamicserver.app.namespace>dynamicserver.app</dynamicserver.app.namespace>
+  	
+  	<!-- dynamicserver Core Component -->
+  	<dynamicserver.framework.release.version>1.1.1</dynamicserver.framework.release.version>
+  	
+  	<dynamicserver.app.osgi.server.version>${dynamicserver.framework.release.version}</dynamicserver.app.osgi.server.version>
+  	<dynamicserver.app.osgi.server.extension.version>${dynamicserver.app.osgi.server.version}</dynamicserver.app.osgi.server.extension.version>
+  	<dynamicserver.lib.osgi.version>${dynamicserver.framework.release.version}</dynamicserver.lib.osgi.version>
+  	<dynamicserver.lib.spring.version>${dynamicserver.framework.release.version}</dynamicserver.lib.spring.version>
+  	<dynamicserver.lib.environment.version>${dynamicserver.framework.release.version}</dynamicserver.lib.environment.version>
+  	<dynamicserver.lib.environment.loader.version>${dynamicserver.lib.environment.version}</dynamicserver.lib.environment.loader.version>
+  	<dynamicserver.lib.jtalogger.version>${dynamicserver.framework.release.version}</dynamicserver.lib.jtalogger.version>
+  	  	
+  	<!-- dynamicserver Common POMs -->
+  	<dynamicserver.pom.version>1</dynamicserver.pom.version>
+  	<dynamicserver.app.osgi.server.service.pom.version>1</dynamicserver.app.osgi.server.service.pom.version>
+  	
+  	<!-- 3rd party libraries -->
+  	<springframework.version>3.0.0.RELEASE</springframework.version>
+  	<springframework.osgi.version>1.2.1</springframework.osgi.version>
+  	<cxf.version>2.2.9</cxf.version>
+  	<atomikos.version>3.6.4</atomikos.version>
+  	<cglib.version>2.2.0</cglib.version>
+  	<jboss.cache.version>3.2.0.GA</jboss.cache.version>
+  	<velocity.version>1.4.0</velocity.version>
+  	<commons.logging.version>1.1.1</commons.logging.version>
+  	<log4j.version>1.2.15</log4j.version>
+  	
+  	<!-- Databases -->
+  	<mysql.version>5.1.6</mysql.version>
+  	<net.sourceforge.jtds.version>1.2.2</net.sourceforge.jtds.version>
+  	
+  	<!-- Automated Testing -->
+  	<junit.version>3.8.1</junit.version>
+  </properties>
+  
+  <repositories>
+  	<repository>
+		<id>com.springsource.repository.bundles.release</id>
+		<name>SpringSource Enterprise Bundle Repository - SpringSource Bundle Releases</name>
+  		<url>http://repository.springsource.com/maven/bundles/release</url>
+  	</repository>
+  	<repository>
+  		<id>com.springsource.repository.bundles.external</id>
+  		<name>SpringSource Enterprise Bundle Repository - External Bundle Releases</name>
+  		<url>http://repository.springsource.com/maven/bundles/external</url>
+	</repository>
+	
+	<repository>
+		<id>com.atomikos.repository</id>
+		<name>Atomikos Maven Repository</name>
+  		<url>http://repo.atomikos.com/</url>
+  	</repository>
+  </repositories>
+  
+  <dependencies>
+    <dependency>
+	  <groupId>org.apache.log4j</groupId>
+	  <artifactId>com.springsource.org.apache.log4j</artifactId>
+	  <version>${log4j.version}</version>
+	  <scope>provided</scope>
+	</dependency>
+	<dependency>
+      <groupId>org.apache.commons</groupId>
+	  <artifactId>com.springsource.org.apache.commons.logging</artifactId>
+	  <version>${commons.logging.version}</version> 
+	  <scope>provided</scope>
+	</dependency>
+	<dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  
+  <build>
+  	<pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.6</version>
+          <configuration>
+            <parallel>methods</parallel>
+            <threadCount>10</threadCount>
+          </configuration>
+        </plugin>
+        <plugin>
+          <!-- Force specific Java version to be used. -->
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <source>${java.version}</source>
+            <target>${java.version}</target>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.felix</groupId>
+          <artifactId>maven-bundle-plugin</artifactId>
+          <extensions>true</extensions>
+          <executions>
+            <execution>
+              <id>bundle-manifest</id>
+              <phase>process-classes</phase>
+              <goals>
+                <goal>manifest</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <supportedProjectTypes>
+              <supportedProjectType>jar</supportedProjectType>
+              <supportedProjectType>bundle</supportedProjectType>
+              <supportedProjectType>war</supportedProjectType>
+            </supportedProjectTypes>
+            <instructions>
+              <Import-Package>*</Import-Package>
+              <Embed-Dependency>*;scope=compile|runtime</Embed-Dependency>
+              <Embed-Directory>lib</Embed-Directory>
+            </instructions>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+  
+</project>

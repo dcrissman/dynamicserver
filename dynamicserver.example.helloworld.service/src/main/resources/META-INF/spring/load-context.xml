@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd"
+	xmlns:osgi="http://www.springframework.org/schema/osgi">
+	
+	<!-- 
+		This context file is standard for all services and should remain
+		unaltered. Any specific configuration changes should be made in the
+		service-context.xml file or another appropriate file.
+	-->
+	
+	<!-- Load Service specific property files. -->
+	<bean class="dynamicserver.lib.environment.io.support.EnvironmentConsciousPatternAwarePropertyPlaceholderConfigurer">
+		<property name="locationPattern" value="classpath:META-INF/properties/*.properties" />
+	</bean>
+	
+	<!-- Import the ServiceManager from the primary WebService. -->
+	<osgi:reference 
+		id="serviceManager"
+		bean-name="serviceManager"
+		interface="dynamicserver.app.osgi.server.extension.IServiceManager" />
+	
+	<!-- Activate Service -->
+	<bean class="dynamicserver.app.osgi.server.extension.util.DefaultServiceActivator" 
+		init-method="activate"
+		destroy-method="deactivate">
+		<property name="service" ref="serviceInstance" />
+		<property name="address" value="${service.url}" />
+		<property name="serviceManager" ref="serviceManager" />
+	</bean>
+	
+</beans>

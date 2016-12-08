@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  
+  <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+    <groupId>${dynamicserver.namespace}</groupId>
+    <artifactId>${dynamicserver.example.namespace}.pom</artifactId>
+    <version>1</version>
+    <relativePath>../dynamicserver.example.pom/</relativePath>
+  </parent>
+  
+  <artifactId>${dynamicserver.app.namespace}.osgi.server.service.pom</artifactId>
+  <version>${dynamicserver.app.osgi.server.service.pom.version}</version>
+  <packaging>pom</packaging>
+  <name>${project.artifactId}</name>
+  
+  <dependencies>
+    <dependency>
+      <groupId>${dynamicserver.namespace}</groupId>
+      <artifactId>${dynamicserver.app.namespace}.osgi.server.extension</artifactId>
+      <version>${dynamicserver.app.osgi.server.extension.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  	<dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>org.springframework.context</artifactId>
+      <version>${springframework.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.geronimo.specs</groupId>
+      <artifactId>geronimo-ws-metadata_2.0_spec</artifactId>
+      <version>1.1.2</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.osgi</groupId>
+      <artifactId>org.osgi</artifactId>
+      <version>3.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+  
+  <build>
+    <pluginManagement>
+      <plugins>
+          <plugin>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>maven-bundle-plugin</artifactId>
+            <configuration>
+            <instructions>
+              <Import-Bundle>
+org.springframework.context.support;version="[${springframework.version},${springframework.version}]",
+org.springframework.osgi.core;version="[${springframework.osgi.version},${springframework.osgi.version}]"
+              </Import-Bundle>
+            </instructions>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+  
+</project>

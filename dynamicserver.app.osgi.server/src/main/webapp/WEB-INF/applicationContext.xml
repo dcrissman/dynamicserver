@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:osgi="http://www.springframework.org/schema/osgi"
+	xmlns:cxf="http://cxf.apache.org/core"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd
+		http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd"
+	default-autowire="byName">
+	 	
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	
+	<!-- 
+		Enable classpath scanning 
+	-->
+	<context:component-scan base-package="dynamicserver.app.osgi.server" />
+	
+	<!-- 
+		Enable inboud and outbound traffic logging. 
+	-->
+	<bean id="logInbound" class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+    <bean id="logOutbound" class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
+	<cxf:bus>
+		<cxf:inInterceptors>
+            <ref bean="logInbound"/>
+        </cxf:inInterceptors>
+        <cxf:outInterceptors>
+            <ref bean="logOutbound"/>
+        </cxf:outInterceptors>
+        <cxf:inFaultInterceptors>
+            <ref bean="logOutbound"/>
+        </cxf:inFaultInterceptors>
+	</cxf:bus>
+	
+	<!--
+		Instantiate Server Status module
+		NOTE: For reasons I do not entirely understand, the server must have a
+		service built into it to work properly.
+	-->
+	<bean id="serverStatusImpl" class="dynamicserver.app.osgi.server.service.ServerStatus" />
+	<jaxws:endpoint 
+		id="serverStatusEndpoint" 
+		implementorClass="dynamicserver.app.osgi.server.service.ServerStatus"
+		implementor="#serverStatusImpl"
+		address="/ServerStatus" />
+	
+	<!-- 
+		Export the ServiceManager to be consumed by external bundles 
+	-->
+	<osgi:service 
+		ref="serviceManager"
+		context-class-loader="service-provider"
+		interface="dynamicserver.app.osgi.server.extension.IServiceManager" />
+	
+</beans>

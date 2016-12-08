@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  
+  <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+    <groupId>dynamicserver</groupId>
+    <artifactId>dynamicserver.pom</artifactId>
+    <version>1</version>
+    <relativePath>../dynamicserver.pom/</relativePath>
+  </parent>
+  
+  <groupId>${dynamicserver.namespace}</groupId>
+  <artifactId>${dynamicserver.app.namespace}.osgi.server</artifactId>
+  <version>${dynamicserver.app.osgi.server.version}</version>
+  <packaging>war</packaging>
+  <name>${project.artifactId}</name>
+  
+  <dependencies>
+    <dependency>
+      <groupId>${dynamicserver.namespace}</groupId>
+      <artifactId>${dynamicserver.app.namespace}.osgi.server.extension</artifactId>
+      <version>${dynamicserver.app.osgi.server.extension.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-bundle-minimal</artifactId>
+      <version>${cxf.version}</version>
+      <scope>provided</scope>
+      <exclusions>
+      <!-- The springframework 3.0.0 currently exists in Virgo.
+      If we upgrade this version of CXF, these exclusions may need to be removed. -->
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-context</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-beans</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-web</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-tx</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-context-support</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-jms</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+  		<groupId>org.springframework</groupId>
+  		<artifactId>org.springframework.context</artifactId>
+  		<version>${springframework.version}</version>
+  		<scope>provided</scope>
+  	</dependency>
+    <dependency>
+  		<groupId>org.springframework</groupId>
+  		<artifactId>org.springframework.web</artifactId>
+  		<version>${springframework.version}</version>
+  		<scope>provided</scope>
+  	</dependency>
+  </dependencies>
+  
+  <build>
+    <plugins>
+      <plugin>
+      	<!-- 
+      		Include the MANIFEST.MF file in packaged war file.
+      	 -->
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+            <manifest>
+            	<addClasspath>true</addClasspath>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+      	<!-- 
+      		Dynamically generate the MANIFEST.MF file.
+      	 -->
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <configuration>
+          <instructions>
+            <Module-Type>Web</Module-Type>
+            <Import-Package>
+            	org.springframework.context;version="[${springframework.version},${springframework.version}]",
+            	org.springframework.context.config;version="[${springframework.version},${springframework.version}]",
+            	org.springframework.context.event;version="[${springframework.version},${springframework.version}]",
+            	org.springframework.context.support;version="[${springframework.version},${springframework.version}]",
+            	org.springframework.util;version="[${springframework.version},${springframework.version}]",
+            	org.springframework.web.context;version="[${springframework.version},${springframework.version}]",
+            	org.eclipse.virgo.web.dm,
+            	*
+            </Import-Package>
+            <Import-Bundle>
+org.apache.cxf.bundle-minimal;version="[${cxf.version},${cxf.version}]",
+org.springframework.beans;version="[${springframework.version},${springframework.version}]",
+org.springframework.core;version="[${springframework.version},${springframework.version}]",
+org.springframework.osgi.core;version="[${springframework.osgi.version},${springframework.osgi.version}]"
+            </Import-Bundle>
+            <Private-Package>dynamicserver, dynamicserver.app, dynamicserver.app.osgi</Private-Package>
+          </instructions>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  
+</project>

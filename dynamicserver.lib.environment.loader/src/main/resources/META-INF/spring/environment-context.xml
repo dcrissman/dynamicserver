@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- README!!!
+	
+	The 'environment' property can be set to anything, so long as the property 
+	files that are intended to be used start with the same string value split 
+	by a period. If a properties file does not start with the same string, 
+	it will be ignored.
+	
+	Example:
+	 If 'environment = prod' then for module named myservice
+	 'prod.myservice.properties' will be loaded
+	
+	Suggested values would include: prod, stage, local... but again, could be
+	 anything.
+	 
+	As of this writing, there are two ways to get the environment:
+	  1. dynamicserver.lib.environment.DefaultEnvironment
+	  2. dynamicserver.lib.environment.loader.bean.EnvironmentRemoteDeterminer
+	
+	The first is a simple container to allow the environment to be manually set.
+	The second allows for a dynamic determination using a web service
+	-->
+	
+	<bean class="dynamicserver.lib.environment.io.support.EnvironmentConsciousPatternAwarePropertyPlaceholderConfigurer">
+		<property name="environment">
+		  <bean class="dynamicserver.lib.environment.loader.bean.EnvironmentRemoteDeterminer"
+		  init-method="init">
+		    <property name="url" value="${environment.loader.client.url}" />
+		    <property name="namespace" value="${environment.loader.client.namespace}" />
+		    <property name="name" value="${environment.loader.client.service}" />
+		  </bean>
+		</property>
+	</bean>
+	
+</beans>

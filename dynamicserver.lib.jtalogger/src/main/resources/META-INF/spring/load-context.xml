@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- 
+		This context file is standard for all modules and should remain
+		unaltered. Any specific configuration changes should be made in the
+		module-context.xml file or another appropriate file.
+	-->
+	
+	<!-- Load Service specific property files. -->
+	<bean class="dynamicserver.lib.environment.io.support.EnvironmentConsciousPatternAwarePropertyPlaceholderConfigurer">
+		<property name="locationPattern" value="classpath:META-INF/properties/*.properties" />
+	</bean>
+	
+</beans>

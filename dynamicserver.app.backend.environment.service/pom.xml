@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  
+  <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+    <groupId>${dynamicserver.namespace}</groupId>
+    <artifactId>${dynamicserver.app.namespace}.osgi.server.service.pom</artifactId>
+    <version>${dynamicserver.app.osgi.server.service.pom.version}</version>
+	<relativePath>../dynamicserver.app.osgi.server.service.pom/</relativePath>
+  </parent>
+  
+  <artifactId>${dynamicserver.app.namespace}.backend.environment.service</artifactId>
+  <version>1</version>
+  <packaging>bundle</packaging>
+  <name>${project.artifactId}</name>
+  
+  <dependencies>
+    <dependency>
+      <groupId>${dynamicserver.namespace}</groupId>
+      <artifactId>${dynamicserver.lib.namespace}.environment</artifactId>
+      <version>${dynamicserver.lib.environment.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>${dynamicserver.namespace}</groupId>
+      <artifactId>${dynamicserver.app.namespace}.backend.environment.client</artifactId>
+      <version>1</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>com.springsource.javax.servlet</artifactId>
+      <version>2.5.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-bundle-minimal</artifactId>
+      <version>${cxf.version}</version>
+      <scope>provided</scope>
+      <exclusions>
+      <!-- The springframework 3.0.0 currently exists in Virgo.
+      If we upgrade this version of CXF, these exclusions may need to be removed. -->
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-context</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-beans</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-web</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-tx</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-context-support</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-jms</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+  </dependencies>
+  
+  <build>
+    <plugins>
+		<plugin>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>maven-bundle-plugin</artifactId>
+		</plugin>
+	</plugins>
+  </build>
+  
+</project>

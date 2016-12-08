@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>dynamicservice</groupId>
+  <artifactId>dynamicservice</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+    
+  <modules>
+    <module>dynamicserver.lib.osgi</module>
+    <module>dynamicserver.lib.spring</module>
+    <module>dynamicserver.lib.environment</module>
+    <module>dynamicserver.lib.jtalogger</module>
+    
+    <module>dynamicserver.app.osgi.server.extension</module>
+    <module>dynamicserver.app.osgi.server</module>
+    
+    <module>dynamicserver.app.backend.environment.client</module>
+    <module>dynamicserver.app.backend.environment.service</module>
+    
+    <module>dynamicserver.example.helloworld.service</module>
+  </modules>
+</project>

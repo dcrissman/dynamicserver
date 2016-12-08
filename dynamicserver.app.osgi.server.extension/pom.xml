@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+    <groupId>dynamicserver</groupId>
+    <artifactId>dynamicserver.pom</artifactId>
+    <version>1</version>
+    <relativePath>../dynamicserver.pom/</relativePath>
+  </parent>
+  
+  <groupId>${dynamicserver.namespace}</groupId>
+  <artifactId>${dynamicserver.app.namespace}.osgi.server.extension</artifactId>
+  <version>${dynamicserver.app.osgi.server.extension.version}</version>
+  <packaging>bundle</packaging>
+  <name>${project.artifactId}</name>
+  
+  <dependencies>
+	<dependency>
+		<groupId>dynamicserver</groupId>
+		<artifactId>dynamicserver.lib.osgi</artifactId>
+		<version>${dynamicserver.lib.osgi.version}</version>
+		<scope>provided</scope>
+    </dependency>
+  	<dependency>
+  		<groupId>org.springframework</groupId>
+  		<artifactId>spring-beans</artifactId>
+  		<version>${springframework.version}</version>
+  		<scope>provided</scope>
+  	</dependency>
+  </dependencies>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+  
+</project>
